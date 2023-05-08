@@ -1,9 +1,9 @@
 class BooksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
   def show
     @book = Book.find(params[:id])
-    @user = User.find(@book.user_id)
-    @book_new = Book.new
     @book_comment = BookComment.new
   end
 
@@ -37,7 +37,6 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    @book = Book.find(params[:id])
     @book.destroy
     redirect_to books_path
   end
